@@ -13,58 +13,61 @@
 // 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 
-public class SeededRandom
+namespace Mustard
 {
-	private readonly int _min;
-	private readonly int _max;
-
-	private List<int> _values;
-	private Random _random;
-	private int _index;
-
-	public SeededRandom(Seed seed, int min = 1, int max = 100)
+	public class SeededRandom
 	{
-		if (min > max)
-			throw new ArgumentException("min must be <= max");
+		private readonly int _min;
+		private readonly int _max;
 
-		_min = min;
-		_max = max;
+		private List<int> _values;
+		private Random _random;
+		private int _index;
 
-		Initialize(seed.Hash);
-	}
-
-	public int Next()
-	{
-		if (_index >= _values.Count)
+		public SeededRandom(Seed seed, int min = 1, int max = 100)
 		{
+			if (min > max)
+				throw new ArgumentException("min must be <= max");
+
+			_min = min;
+			_max = max;
+
+			Initialize(seed.Hash);
+		}
+
+		public int Next()
+		{
+			if (_index >= _values.Count)
+			{
+				Reshuffle();
+			}
+
+			return _values[_index++];
+		}
+
+		public void Reset(Seed seed) => Initialize(seed.Hash);
+
+		private void Initialize(int hash)
+		{
+			_random = new Random(hash);
+			_values = Enumerable.Range(_min, _max - _min + 1).ToList();
+
 			Reshuffle();
 		}
 
-		return _values[_index++];
-	}
-
-	public void Reset(Seed seed) => Initialize(seed.Hash);
-
-	private void Initialize(int hash)
-	{
-		_random = new Random(hash);
-		_values = Enumerable.Range(_min, _max - _min + 1).ToList();
-
-		Reshuffle();
-	}
-
-	private void Reshuffle()
-	{
-		// Fisher–Yates shuffle を使用
-		for (int i = _values.Count - 1; i > 0; i--)
+		private void Reshuffle()
 		{
-			int j = _random.Next(i + 1);
+			// Fisher–Yates shuffle を使用
+			for (int i = _values.Count - 1; i > 0; i--)
+			{
+				int j = _random.Next(i + 1);
 
-			int temp = _values[i];
-			_values[i] = _values[j];
-			_values[j] = temp;
+				int temp = _values[i];
+				_values[i] = _values[j];
+				_values[j] = temp;
+			}
+
+			_index = 0;
 		}
-
-		_index = 0;
 	}
 }
