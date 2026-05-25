@@ -27,19 +27,13 @@ namespace Mustard
 		public string Value { get; }
 		public int Hash { get; }
 		public int Length => Value.Length;
+		public static Seed Default => Create(DefaultLength);
 
 		private Seed(string value)
 		{
 			Value = value;
 			Hash = ComputeHash(value);
 		}
-
-		/// <summary>
-		/// デフォルト生成
-		/// </summary>
-		/// <returns></returns>
-		public static Seed Create()
-			=> Create(DefaultLength);
 
 		/// <summary>
 		/// 長さ指定生成

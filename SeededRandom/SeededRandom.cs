@@ -29,13 +29,16 @@ namespace Mustard
 
 		public SeededRandom(Seed seed, int min = 1, int max = 100)
 		{
-			if (min > max)
-				throw new ArgumentException("min must be <= max");
+			if (min >= max)
+				throw new ArgumentException("min must be < max");
 
 			_min = min;
 			_max = max;
 
-			Initialize(seed.Hash);
+			_random = new Random(seed.Hash);
+			_values = Enumerable.Range(_min, _max - _min + 1).ToList();
+
+			Reshuffle();
 		}
 
 		public int Next()
@@ -48,11 +51,9 @@ namespace Mustard
 			return _values[_index++];
 		}
 
-		public void Reset(Seed seed) => Initialize(seed.Hash);
-
-		private void Initialize(int hash)
+		public void Reset(Seed seed)
 		{
-			_random = new Random(hash);
+			_random = new Random(seed.Hash);
 			_values = Enumerable.Range(_min, _max - _min + 1).ToList();
 
 			Reshuffle();
