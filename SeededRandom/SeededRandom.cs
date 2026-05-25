@@ -23,9 +23,12 @@ namespace Mustard
 		private readonly int _min;
 		private readonly int _max;
 
-		private List<int> _values;
-		private Random _random;
-		private int _index;
+		private List<int>	_values;
+		private Random		_random;
+		private int			_index;
+		private Seed		_seed;
+
+		public Seed Current => _seed;
 
 		public SeededRandom(Seed seed, int min = 1, int max = 100)
 		{
@@ -37,6 +40,8 @@ namespace Mustard
 
 			_random = new Random(seed.Hash);
 			_values = Enumerable.Range(_min, _max - _min + 1).ToList();
+
+			_seed = seed;
 
 			Reshuffle();
 		}
