@@ -19,90 +19,88 @@ using System.Text;
 
 namespace Mustard
 {
-	public readonly struct Seed : IEquatable<Seed>
-	{
-		private const string Charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		private const int DefaultLength = 20;
+	//public readonly struct Seed : IEquatable<Seed>
+	//{
+	//	private const string Charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//	private const int DefaultLength = 20;
 
-		public string Value { get; }
-		public int Hash { get; }
-		public int Length => Value.Length;
-		public static Seed Default => Create(DefaultLength);
+	//	public string Value { get; }
+	//	public int Hash { get; }
+	//	public int Length => Value.Length;
+	//	public static Seed Default => Create(DefaultLength);
 
-		private Seed(string value)
-		{
-			Value = value;
-			Hash = ComputeHash(value);
-		}
+	//	private Seed(string value)
+	//	{
+	//		Value = value;
+	//		Hash = ComputeHash(value);
+	//	}
 
-		/// <summary>
-		/// 長さ指定生成
-		/// </summary>
-		/// <param name="length"></param>
-		/// <returns></returns>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		public static Seed Create(int length)
-		{
-			if (length <= 0)
-				throw new ArgumentOutOfRangeException(nameof(length));
+	//	/// <summary>
+	//	/// 長さ指定生成
+	//	/// </summary>
+	//	/// <param name="length"></param>
+	//	/// <returns></returns>
+	//	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	//	public static Seed Create(int length)
+	//	{
+	//		if (length <= 0)
+	//			throw new ArgumentOutOfRangeException(nameof(length));
 
-			var buffer = new byte[length];
-			RandomNumberGenerator.Fill(buffer);
+	//		var buffer = new byte[length];
+	//		RandomNumberGenerator.Fill(buffer);
 
-			var sb = new StringBuilder(length);
-			for (int i = 0; i < length; i++)
-			{
-				int index = buffer[i] % Charset.Length;
-				sb.Append(Charset[index]);
-			}
+	//		var sb = new StringBuilder(length);
+	//		for (int i = 0; i < length; i++)
+	//		{
+	//			int index = buffer[i] % Charset.Length;
+	//			sb.Append(Charset[index]);
+	//		}
 
-			return new Seed(sb.ToString());
-		}
+	//		return new Seed(sb.ToString());
+	//	}
 
-		/// <summary>
-		/// 文字列からSeedを復元
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public static Seed Restore(string value)
-		{
-			Validate(value);
-			return new Seed(value);
-		}
+	//	/// <summary>
+	//	/// 文字列からSeedを復元
+	//	/// </summary>
+	//	/// <param name="value"></param>
+	//	/// <returns></returns>
+	//	public static Seed Restore(string value)
+	//	{
+	//		Validate(value);
+	//		return new Seed(value);
+	//	}
 
-		/// <summary>
-		/// 整合性チェック
-		/// </summary>
-		/// <param name="value"></param>
-		/// <exception cref="ArgumentException"></exception>
-		private static void Validate(string value)
-		{
-			if (string.IsNullOrWhiteSpace(value))
-				throw new ArgumentException("Seed cannot be null or empty.");
+	//	/// <summary>
+	//	/// 整合性チェック
+	//	/// </summary>
+	//	/// <param name="value"></param>
+	//	/// <exception cref="ArgumentException"></exception>
+	//	private static void Validate(string value)
+	//	{
+	//		if (string.IsNullOrWhiteSpace(value))
+	//			throw new ArgumentException("Seed cannot be null or empty.");
 
-			if (value.Any(c => !Charset.Contains(c)))
-				throw new ArgumentException("Seed contains invalid characters.");
-		}
+	//		if (value.Any(c => !Charset.Contains(c)))
+	//			throw new ArgumentException("Seed contains invalid characters.");
+	//	}
 
-		/// <summary>
-		/// Seed値からHashを算出
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		private static int ComputeHash(string value)
-		{
-			using var sha = SHA256.Create();
-			var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(value));
-			return BitConverter.ToInt32(hash, 0);
-		}
+	//	/// <summary>
+	//	/// Seed値からHashを算出
+	//	/// </summary>
+	//	/// <param name="value"></param>
+	//	/// <returns></returns>
+	//	private static int ComputeHash(string value)
+	//	{
+	//		using var sha = SHA256.Create();
+	//		var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(value));
+	//		return BitConverter.ToInt32(hash, 0);
+	//	}
 
-		public override string ToString() => Value;
-
-		public bool Equals(Seed other) => Value == other.Value;
-		public override bool Equals(object obj) => obj is Seed other && Equals(other);
-		public override int GetHashCode() => Value.GetHashCode();
-
-		public static bool operator ==(Seed left, Seed right) => left.Equals(right);
-		public static bool operator !=(Seed left, Seed right) => !left.Equals(right);
-	}
+	//	public override string ToString() => Value;
+	//	public bool Equals(Seed other) => Value == other.Value;
+	//	public override bool Equals(object obj) => obj is Seed other && Equals(other);
+	//	public override int GetHashCode() => Value.GetHashCode();
+	//	public static bool operator ==(Seed left, Seed right) => left.Equals(right);
+	//	public static bool operator !=(Seed left, Seed right) => !left.Equals(right);
+	//}
 }

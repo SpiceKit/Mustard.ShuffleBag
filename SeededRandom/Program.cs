@@ -3,7 +3,9 @@
 
 //var pool = new SeededRandomPool(1, 100, seed: 12345);
 
+var bag = new Mustard.ShuffleBag(Mustard.Seed.Restore("Hello"));
+
 for (int i = 0; i < 5; i++)
 {
-	//Console.WriteLine(pool.Next());
+	Console.WriteLine(bag.Next());
 }
