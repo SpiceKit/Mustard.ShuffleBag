@@ -1,4 +1,4 @@
-# ShuffleBag
+# Mustard Shuffle Bag
 
 Fisher–Yates Shuffle アルゴリズムを使用した、C#向けの再現可能なシャッフルバッグ実装です。
 
