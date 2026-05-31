@@ -1,4 +1,4 @@
-# Shuffle Bag
+# Mustard Shuffle Bag
 
 A deterministic shuffle bag implementation for C# based on the Fisher–Yates shuffle algorithm.
 
