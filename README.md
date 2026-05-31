@@ -4,6 +4,8 @@ A deterministic shuffle bag implementation for C# based on the Fisher–Yates sh
 
 `ShuffleBag` generates values in a randomized order without repetition until every value in the range has been used. The sequence is fully reproducible using a `Seed`, making it suitable for gameplay systems, procedural generation, testing, and simulations.
 
+[日本語はこちら](README.ja.md)
+
 ## Features
 
 * Deterministic random sequence using a seed
